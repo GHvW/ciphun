@@ -1,34 +1,36 @@
 
 pub struct Ceasar {
     shift: usize,
-    alphabet: Vec<char>
+    alphabet: Vec<char>,
+    missing_char: char
 }
 
 impl Ceasar {
     pub fn standard(shift: usize) -> Self {
         Self { 
             shift, 
-            alphabet: vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] 
+            alphabet: vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            missing_char: '_' 
         }
     }
 
-    pub fn new(shift: usize, alphabet: Vec<char>) -> Self {
+    pub fn new(shift: usize, alphabet: Vec<char>, missing_char: char) -> Self {
         Self {
             shift,
-            alphabet
+            alphabet,
+            missing_char
         }
     }
 
-    pub fn encrypt(&self, text: &str) -> Option<String> {
+    pub fn encrypt(&self, text: &str) -> String {
         text
             .chars()
             .map(|c| {
                 self.alphabet
                     .iter()
                     .position(|ac| *ac == c)
-                    .map(|i| {
-                        let alphabet_len = self.alphabet.len();
-                        let index_of_char = (i + self.shift) % alphabet_len;
+                    .map_or(self.missing_char, |i| {
+                        let index_of_char = (i + self.shift) % self.alphabet.len();
                         self.alphabet[index_of_char]
                     })
             })
@@ -50,7 +52,7 @@ mod tests {
         let text = "aaa";
         let ceasar = Ceasar::standard(3);
 
-        let result = ceasar.encrypt(text).unwrap();
+        let result = ceasar.encrypt(text);
 
         assert_eq!("ddd".to_string() , result);
     }
@@ -61,22 +63,22 @@ mod tests {
         let text = "yyy";
         let ceasar = Ceasar::standard(3);
 
-        let result = ceasar.encrypt(text).unwrap();
+        let result = ceasar.encrypt(text);
 
         // then should wrap to start of alphabet
         assert_eq!("bbb".to_string() , result);
     }
 
     #[test]
-    fn just_for_fun() {
+    fn missing_character() {
         // letters should transform into a letter 3 characters down the alphabet
-        let text = "helloworld";
+        let text = "hello world";
         let ceasar = Ceasar::standard(3);
 
-        let result = ceasar.encrypt(text).unwrap();
+        let result = ceasar.encrypt(text);
 
         // then should wrap to start of alphabet
-        assert_eq!("khoorzruog".to_string() , result);
+        assert_eq!("khoor_zruog".to_string() , result);
     }
 }
 
