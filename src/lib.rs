@@ -1,5 +1,5 @@
-pub mod Ceasar;
-pub mod Vigenere;
+pub mod ceasar;
+pub mod vigenere;
 
 #[cfg(test)]
 mod tests {
