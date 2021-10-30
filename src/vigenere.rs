@@ -61,17 +61,17 @@ mod tests {
         assert_eq!("jkj".to_string() , result);
     }
 
-    // #[test]
-    // fn when_text_is_encrpyted_with_a_shift_of_3_and_there_is_only_1_letter_left_in_the_alphabet() {
-    //     // letters should transform into a letter 3 characters down the alphabet
-    //     let text = "yyy";
-    //     let ceasar = Ceasar::standard(3);
+    #[test]
+    fn when_text_is_encrpyted_with_a_shift_of_3_and_there_is_only_1_letter_left_in_the_alphabet() {
+        // letters should transform into a letter 3 characters down the alphabet
+        let text = "yyy";
+        let vig = Vigenere::new(String::from("hi"));
 
-    //     let result = ceasar.encrypt(text);
+        let result = vig.encrypt(text);
 
-    //     // then should wrap to start of alphabet
-    //     assert_eq!("bbb".to_string() , result);
-    // }
+        // then should wrap to start of alphabet
+        assert_eq!("fgf".to_string() , result);
+    }
 
     // #[test]
     // fn missing_character() {
