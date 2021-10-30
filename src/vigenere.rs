@@ -20,23 +20,26 @@ impl Vigenere {
             .chars()
             .zip(self.shift.chars().cycle())
             .map(|(it, key)| {
-                self.alphabet.iter().enumerate().scan((usize::MAX, usize::MAX), |result, (i, next)| {
-                    if it == *next {
-                        result.0 = i;
-                        Some(*result)
-                    } else if key == *next {
-                        result.1 = i;
-                        Some(*result)
-                    } else {
-                        Some(*result)
-                    }
-                })
-                .skip_while(|result| result.0 == usize::MAX || result.1 == usize::MAX)
-                .next()
-                .map_or(self.missing_char, |(it_idx, key_idx)| {
-                    let index = (it_idx + key_idx) % self.alphabet.len();
-                    self.alphabet[index]
-                })
+                self.alphabet
+                    .iter()
+                    .enumerate()
+                    .scan((usize::MAX, usize::MAX), |result, (i, next)| {
+                        if it == *next {
+                            result.0 = i;
+                            Some(*result)
+                        } else if key == *next {
+                            result.1 = i;
+                            Some(*result)
+                        } else {
+                            Some(*result)
+                        }
+                    })
+                    .skip_while(|result| result.0 == usize::MAX || result.1 == usize::MAX)
+                    .next()
+                    .map_or(self.missing_char, |(it_idx, key_idx)| {
+                        let index = (it_idx + key_idx) % self.alphabet.len();
+                        self.alphabet[index]
+                    })
             })
             .collect()
     }
