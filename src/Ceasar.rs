@@ -1,4 +1,5 @@
 
+// TODO - switch to indexedset? from IndexedMap crate?
 pub struct Ceasar {
     shift: usize,
     alphabet: Vec<char>,

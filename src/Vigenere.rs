@@ -1,4 +1,5 @@
 
+// TODO - switch to indexedset? from IndexedMap crate
 pub struct Vigenere {
     shift: String,
     alphabet: Vec<char>,
@@ -21,32 +22,26 @@ impl Vigenere {
             .map(|(it, key)| {
                 self.alphabet.iter().enumerate().scan((usize::MAX, usize::MAX), |result, (i, next)| {
                     if it == *next {
-                        println!("i for it is {}", i);
                         result.0 = i;
                         Some(*result)
                     } else if key == *next {
-                        println!("i for key is {}", i);
                         result.1 = i;
                         Some(*result)
                     } else {
-                        println!("i is {}, result is {:?}", i, result);
                         Some(*result)
                     }
                 })
                 .skip_while(|result| result.0 == usize::MAX || result.1 == usize::MAX)
                 .next()
                 .map_or(self.missing_char, |(it_idx, key_idx)| {
-                    println!("it {} key {}", it_idx, key_idx);
-                    self.alphabet[(it_idx + key_idx) % self.alphabet.len()]
+                    let index = (it_idx + key_idx) % self.alphabet.len();
+                    self.alphabet[index]
                 })
             })
             .collect()
     }
 }
 
-// fn is_subsetish(shift: &string, alphabet: &[char]) -> bool {
-//     shift.chars().all(|c| )
-// }
 
 #[cfg(test)]
 mod tests {
@@ -87,5 +82,6 @@ mod tests {
     //     assert_eq!("khoor_zruog".to_string() , result);
     // }
 }
+
 
 
