@@ -73,17 +73,17 @@ mod tests {
         assert_eq!("fgf".to_string() , result);
     }
 
-    // #[test]
-    // fn missing_character() {
-    //     // letters should transform into a letter 3 characters down the alphabet
-    //     let text = "hello world";
-    //     let ceasar = Ceasar::standard(3);
+    #[test]
+    fn missing_character() {
+        // letters should transform into a letter 3 characters down the alphabet
+        let text = "hello world";
+        let vig = Vigenere::new(String::from("abba"));
 
-    //     let result = ceasar.encrypt(text);
+        let result = vig.encrypt(text);
 
-    //     // then should wrap to start of alphabet
-    //     assert_eq!("khoor_zruog".to_string() , result);
-    // }
+        // then should wrap to start of alphabet
+        assert_eq!("hfmlo_xorme".to_string() , result);
+    }
 }
 
 
