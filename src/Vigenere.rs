@@ -19,26 +19,26 @@ impl Vigenere {
             .chars()
             .zip(self.shift.chars().cycle())
             .map(|(it, key)| {
-                let (it_idx, key_idx) = 
-                    self.alphabet.iter().enumerate().scan((usize::MAX, usize::MAX), |result, (i, next)| {
-                        if it == *next {
-                            println!("i for it is {}", i);
-                            result.0 = i;
-                            Some(*result)
-                        } else if key == *next {
-                            println!("i for key is {}", i);
-                            result.1 = i;
-                            Some(*result)
-                        } else {
-                            println!("i is {}, result is {:?}", i, result);
-                            Some(*result)
-                        }
-                    })
-                    .skip_while(|result| result.0 == usize::MAX || result.1 == usize::MAX)
-                    .next()
-                    .unwrap();
-                println!("it {} key {}", it_idx, key_idx);
-                self.alphabet[(it_idx + key_idx) % self.alphabet.len()]
+                self.alphabet.iter().enumerate().scan((usize::MAX, usize::MAX), |result, (i, next)| {
+                    if it == *next {
+                        println!("i for it is {}", i);
+                        result.0 = i;
+                        Some(*result)
+                    } else if key == *next {
+                        println!("i for key is {}", i);
+                        result.1 = i;
+                        Some(*result)
+                    } else {
+                        println!("i is {}, result is {:?}", i, result);
+                        Some(*result)
+                    }
+                })
+                .skip_while(|result| result.0 == usize::MAX || result.1 == usize::MAX)
+                .next()
+                .map_or(self.missing_char, |(it_idx, key_idx)| {
+                    println!("it {} key {}", it_idx, key_idx);
+                    self.alphabet[(it_idx + key_idx) % self.alphabet.len()]
+                })
             })
             .collect()
     }
